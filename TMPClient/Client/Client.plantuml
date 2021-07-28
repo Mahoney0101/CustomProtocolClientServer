@@ -1,0 +1,51 @@
+@startuml
+
+    class ClientGUI {
+        - download : JButton
+        - font : Font
+        - frame : JFrame
+        - login : JButton
+        - logout : JButton
+        - upload : JButton
+        - username : String
+        + ClientGUI()
+        + setFrame()
+    }
+
+    class ClientGUI.EventHandler {
+        + actionPerformed()
+    }
+
+    class MyStreamSocket {
+        + input : BufferedReader
+        + output : PrintWriter
+        + socket : Socket
+        + close()
+        + receiveMessage()
+        + sendMessage()
+        ~ MyStreamSocket()
+        ~ MyStreamSocket()
+        - setStreams()
+    }
+
+    class TMPClient {
+        {static} + main()
+    }
+
+    class TMPHelper {
+        {static} ~ endMessage : String
+        - serverHost : InetAddress
+        - serverPort : int
+        + done()
+        + getEcho()
+        ~ TMPHelper()
+    }
+  
+
+ClientGUI o-- TMPHelper : helper
+ClientGUI +-down- ClientGUI.EventHandler
+ClientGUI.EventHandler .up.|> java.awt.event.ActionListener
+MyStreamSocket -up-|> java.net.Socket
+TMPHelper o-- MyStreamSocket : mySocket
+
+@enduml

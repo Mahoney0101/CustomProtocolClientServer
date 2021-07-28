@@ -1,0 +1,53 @@
+@startuml
+
+    class MyStreamSocket {
+        + input : BufferedReader
+        + output : PrintWriter
+        + socket : Socket
+        + close()
+        + receiveMessage()
+        + sendMessage()
+        ~ MyStreamSocket()
+        ~ MyStreamSocket()
+        - setStreams()
+    }
+
+    class ServerGUI {
+        - font : Font
+        - frame : JFrame
+        - startServer : JButton
+        + ServerGUI()
+        + setFrame()
+    }
+
+    class ServerGUI.EventHandler {
+        + actionPerformed()
+    }
+
+    class TMPServer {
+        {static} + main()
+    }
+
+    class TMPServerThread {
+        ~ directories : String[]
+        {static} ~ downloadMessage : String
+        {static} ~ endMessage : String
+        ~ exists : Boolean
+        ~ file : File
+        {static} ~ loginMessage : String
+        {static} ~ logoutMessage : String
+        {static} ~ uploadMessage : String
+        + findFile()
+        + run()
+        ~ TMPServerThread()
+    }
+  
+
+  MyStreamSocket -up-|> java.net.Socket
+  ServerGUI +-down- ServerGUI.EventHandler
+  ServerGUI.EventHandler .up.|> java.awt.event.ActionListener
+  TMPServerThread .up.|> java.lang.Runnable
+  TMPServerThread o-- MyStreamSocket : myDataSocket
+
+
+@enduml
